@@ -25,12 +25,11 @@ class TaskManagerApp:
         self.widgets['entry_tarefa'] = self.create_entry(self.widgets['frame'], width=48)
         self.widgets['label_prioridade'] = self.create_label(self.widgets['frame'], text="Prioridade:", bg="#333333", fg="white")
         self.widgets['combo_prioridade'] = self.create_combobox(self.widgets['frame'], values=["Baixa", "Média", "Alta"], width=45, state="readonly")
-        self.widgets['btn_adicionar'] = self.create_button(self.widgets['frame'], text="Adicionar", command=self.adicionar_tarefa, bg="#4CAF50",padx=40, pady=1, fg="white")
-        self.widgets['btn_excluir'] = self.create_button(self.widgets['frame'], text="Excluir", command=self.excluir_tarefa, bg="#FF5733",padx=50, pady=1, fg="white")
+        self.widgets['combo_prioridade'].current(0)
+        self.widgets['btn_adicionar'] = self.create_button(self.widgets['frame'], text="Adicionar", command=self.adicionar_e_listar_tarefas, bg="#4CAF50", padx=40, pady=1, fg="white")
+        self.widgets['btn_excluir'] = self.create_button(self.widgets['frame'], text="Excluir", command=self.excluir_tarefa, bg="#FF5733", padx=50, pady=1, fg="white")
         self.widgets['tree'] = self.create_treeview(self.widgets['frame'], columns=("ID", "Tarefa", "Prioridade"), show="headings", height=10)
-        self.btn_listar = tk.Button(self.root, text="Listar Tarefas", command=self.listar_tarefas, bg="#007BFF",font=("Arial", 12, "bold"))
-        self.widgets['btn_listartarefa'] = self.create_button(self.widgets['frame'], text="Lista de Tarefas", command=self.listar_tarefas, bg="#0000cd",padx=40, pady=1, fg="white")
-
+       
         # Posicionamento do frame centralizado na janela
         self.widgets['frame'].grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
 
@@ -39,14 +38,14 @@ class TaskManagerApp:
         self.widgets['frame'].grid_columnconfigure(0, weight=1)
 
         # Posicionamento dos widgets dentro do frame
-        self.widgets['label_tarefa'].grid(row=0,column=0, padx=2, pady=2, sticky="w")
+        self.widgets['label_tarefa'].grid(row=0, column=0, padx=2, pady=2, sticky="w")
         self.widgets['entry_tarefa'].grid(row=0, column=1, padx=2, pady=2, sticky="w")
         self.widgets['label_prioridade'].grid(row=1, column=0, padx=2, pady=2, sticky="w")
         self.widgets['combo_prioridade'].grid(row=1, column=1, padx=2, pady=2, sticky="w")
         self.widgets['btn_adicionar'].grid(row=2, column=1, columnspan=2, padx=2, pady=2, sticky="w")
         self.widgets['btn_excluir'].grid(row=2,column=1, columnspan=2, padx=150, pady=2, sticky="e")
         self.widgets['tree'].grid(row=4, column=0, columnspan=2, padx=2, pady=2, sticky="nsew")
-        self.widgets['btn_listartarefa'].grid(row=5, column=0, padx=2, pady=2, sticky="w")
+
 
         # Adicionando os cabeçalhos
         self.widgets['tree'].heading("ID", text="ID")
@@ -78,7 +77,7 @@ class TaskManagerApp:
         cursor.execute("CREATE TABLE IF NOT EXISTS tarefas (id INTEGER PRIMARY KEY, tarefa TEXT, prioridade TEXT)")
         self.conexao.commit()
 
-    def adicionar_tarefa(self):
+    def adicionar_e_listar_tarefas(self):
         tarefa = self.widgets['entry_tarefa'].get()
         prioridade = self.widgets['combo_prioridade'].get()
 
@@ -89,6 +88,9 @@ class TaskManagerApp:
             messagebox.showinfo("Sucesso", "Tarefa adicionada com sucesso!")
             self.widgets['entry_tarefa'].delete(0, tk.END)
             self.widgets['combo_prioridade'].current(0)
+        
+            # Atualizar a lista de tarefas
+            self.listar_tarefas()
         else:
             messagebox.showerror("Erro", "Por favor, insira uma tarefa.")
 
