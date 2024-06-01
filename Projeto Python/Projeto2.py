@@ -13,32 +13,32 @@ class TaskManagerApp:
 
     def create_widgets(self):
         self.frame = tk.Frame(self.root, bg="#333333")
-        self.frame.pack(padx=20, pady=20)
+        self.frame.pack(padx=0, pady=0)
 
         self.label_tarefa = tk.Label(self.frame, text="Tarefa:", bg="#333333", fg="white")
         self.label_tarefa.grid(row=0, column=0, sticky="w", padx=5, pady=5)
 
         self.entry_tarefa = tk.Entry(self.frame, width=30)
-        self.entry_tarefa.grid(row=0, column=1, padx=5, pady=5)
+        self.entry_tarefa.grid(row=0, column=0, padx=5, pady=5)
 
         self.label_prioridade = tk.Label(self.frame, text="Prioridade:", bg="#333333", fg="white")
-        self.label_prioridade.grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        self.label_prioridade.grid(row=1, column=0,sticky="w", padx=5, pady=5)
 
         self.combo_prioridade = ttk.Combobox(self.frame, values=["Baixa", "Média", "Alta"], width=27)
         self.combo_prioridade.current(0)
-        self.combo_prioridade.grid(row=1, column=1, padx=5, pady=5)
+        self.combo_prioridade.grid(row=1, column=0, padx=10, pady=5)
 
         self.btn_adicionar = tk.Button(self.frame, text="Adicionar", command=self.adicionar_tarefa, bg="#4CAF50", fg="white")
-        self.btn_adicionar.grid(row=2, column=0, padx=5, pady=10, sticky="ew")
+        self.btn_adicionar.grid(row=2, column=0, padx=10, pady=5)
 
         self.btn_excluir = tk.Button(self.frame, text="Excluir", command=self.excluir_tarefa, bg="#FF5733", fg="white")
-        self.btn_excluir.grid(row=2, column=1, padx=5, pady=10, sticky="ew")
+        self.btn_excluir.grid(row=2, column=1, padx=10, pady=10)
 
         self.tree = ttk.Treeview(self.frame, columns=("ID", "Tarefa", "Prioridade"), show="headings", height=10)
         self.tree.heading("ID", text="ID")
         self.tree.heading("Tarefa", text="Tarefa")
         self.tree.heading("Prioridade", text="Prioridade")
-        self.tree.grid(row=3, column=0, columnspan=2, padx=5, pady=5)
+        self.tree.grid(row=3, column=0, padx=0, pady=0)
 
         self.btn_listar = tk.Button(self.root, text="Listar Tarefas", command=self.listar_tarefas, bg="#007BFF", fg="white")
         self.btn_listar.pack(pady=10)
